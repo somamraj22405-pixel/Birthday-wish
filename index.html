@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Akshay Dada 🎂</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  overflow: hidden;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  top: 10vh;
+  padding: 20px;
+}
+
+h1 {
+  color: white;
+  font-size: 2rem;
+}
+
+p {
+  color: white;
+}
+
+.cake {
+  position: relative;
+  margin: 40px auto;
+  width: 200px;
+}
+
+.layer {
+  height: 60px;
+  border-radius: 10px;
+  margin: 5px 0;
+}
+
+.layer1 { background: #ff6f61; }
+.layer2 { background: #ffb347; }
+.layer3 { background: #fff176; }
+
+.candle {
+  width: 10px;
+  height: 40px;
+  background: white;
+  margin: 0 auto;
+  position: relative;
+}
+
+.flame {
+  width: 10px;
+  height: 15px;
+  background: orange;
+  border-radius: 50%;
+  position: absolute;
+  top: -15px;
+  left: 0;
+  animation: flicker 0.3s infinite alternate;
+}
+
+@keyframes flicker {
+  from { transform: scale(1); }
+  to { transform: scale(1.3); }
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: white;
+  color: #ff5e7e;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* Cake cutting animation */
+.cut {
+  animation: cutCake 1s forwards;
+}
+
+@keyframes cutCake {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.95) rotate(-2deg); }
+  100% { transform: scale(0.9) translateY(20px); opacity: 0.5; }
+}
+
+@media (max-width:600px) {
+  h1 { font-size: 1.5rem; }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+  <h1>🎉 Happy Birthday Akshay Dada 🎉</h1>
+  <p>Click the cake to cut it 🎂</p>
+
+  <div class="cake" onclick="cutCake()">
+    <div class="candle">
+      <div class="flame" id="flame"></div>
+    </div>
+    <div class="layer layer1"></div>
+    <div class="layer layer2"></div>
+    <div class="layer layer3"></div>
+  </div>
+
+  <button onclick="startConfetti()">Celebrate 🎊</button>
+</div>
+
+<script>
+const canvas = document.getElementById('confetti');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+
+function createConfetti() {
+  for (let i = 0; i < 150; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 2,
+      d: Math.random() * 50,
+      color: `hsl(${Math.random()*360},100%,50%)`
+    });
+  }
+}
+
+function drawConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  confetti.forEach(c => {
+    ctx.fillStyle = c.color;
+    ctx.fillRect(c.x, c.y, c.r, c.r);
+    c.y += 2;
+    if (c.y > canvas.height) c.y = 0;
+  });
+}
+
+let animation;
+
+function startConfetti() {
+  if (!animation) {
+    createConfetti();
+    animation = setInterval(drawConfetti, 20);
+  }
+}
+
+function cutCake() {
+  document.querySelector('.cake').classList.add('cut');
+  document.getElementById('flame').style.display = 'none';
+  startConfetti();
+}
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
